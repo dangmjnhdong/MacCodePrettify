@@ -8,7 +8,7 @@
  * @package MacCodePrettify
  * @author Đặng Minh Đông
  * @version 1.0.6
- * @link https://github.com/dong-nguyen-dev/MacCodePrettify (Thay bằng link git của bạn)
+ * @link https://github.com/dangmjnhdong/MacCodePrettify
  * @copyright Copyright (c) 2026 by Đông
  */
 
