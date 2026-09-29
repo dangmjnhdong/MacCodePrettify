@@ -1,10 +1,15 @@
 <?php
 /**
- * Plugin Highlight Code giao diện Mac
+ * Plugin Highlight Code giao diện Mac cho Typecho
+ * 
+ * Tích hợp nút sao chép có thể tùy chỉnh, đánh số dòng, 
+ * tương thích hoàn hảo với PJAX và tối ưu thanh cuộn trên mobile.
  * 
  * @package MacCodePrettify
  * @author Đặng Minh Đông
  * @version 1.0.6
+ * @link https://github.com/dong-nguyen-dev/MacCodePrettify (Thay bằng link git của bạn)
+ * @copyright Copyright (c) 2026 by Đông
  */
 
 class MacCodePrettify_Plugin implements Typecho_Plugin_Interface
@@ -34,6 +39,7 @@ class MacCodePrettify_Plugin implements Typecho_Plugin_Interface
 
     public static function header()
     {
+        echo '<!-- MacCodePrettify Plugin by Đông -->';
         echo '<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />';
         echo '<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />';
         echo '<style>
@@ -66,7 +72,7 @@ class MacCodePrettify_Plugin implements Typecho_Plugin_Interface
             .mac-code-block .line-numbers-rows { position: absolute !important; top: 0 !important; left: 0 !important; width: 40px !important; padding: 15px 0 !important; margin: 0 !important; border-right: 1px solid rgba(255, 255, 255, 0.1) !important; background: transparent !important; }
             .mac-code-block .line-numbers-rows > span:before { color: #666 !important; padding-right: 10px !important; }
             
-            /* SỬA LỖI THANH CUỘN (ÉP MẠNH HƠN) */
+            /* TỐI ƯU THANH CUỘN */
             .mac-code-block pre { scrollbar-width: none !important; -ms-overflow-style: none !important; }
             .mac-code-block pre::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
             .mac-code-block pre.is-scrolling, .mac-code-block:hover pre, .mac-code-block pre:active { scrollbar-width: thin !important; -ms-overflow-style: auto !important; }
@@ -153,7 +159,6 @@ class MacCodePrettify_Plugin implements Typecho_Plugin_Interface
                 wrapper.appendChild(header);
                 wrapper.appendChild(pre);
 
-                // MỚI: Thêm sự kiện vuốt để xử lý thanh cuộn trên điện thoại
                 pre.addEventListener("touchstart", function() {
                     pre.classList.add("is-scrolling");
                 }, {passive: true});
