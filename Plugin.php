@@ -2,13 +2,11 @@
 /**
  * Plugin Highlight Code giao diện Mac cho Typecho
  * 
- * Tích hợp nút sao chép có thể tùy chỉnh, đánh số dòng, 
- * tương thích hoàn hảo với PJAX, tối ưu thanh cuộn trên mobile
- * và hiển thị nổi bật trên giao diện Dark Mode.
+ * Phiên bản V2: Chống vỡ khung, chống theme xóa CSS.
  * 
  * @package MacCodePrettify
  * @author Đặng Minh Đông
- * @version 1.0.7
+ * @version 2.0.0
  * @link https://github.com/dangmjnhdong/MacCodePrettify
  * @copyright Copyright (c) 2026 by Đông
  */
@@ -19,7 +17,7 @@ class MacCodePrettify_Plugin implements Typecho_Plugin_Interface
     {
         Typecho_Plugin::factory('Widget_Archive')->header = array('MacCodePrettify_Plugin', 'header');
         Typecho_Plugin::factory('Widget_Archive')->footer = array('MacCodePrettify_Plugin', 'footer');
-        return _t('Kích hoạt thành công plugin MacCodePrettify!');
+        return _t('Kích hoạt thành công plugin MacCodePrettify V2!');
     }
 
     public static function deactivate()
@@ -40,52 +38,7 @@ class MacCodePrettify_Plugin implements Typecho_Plugin_Interface
 
     public static function header()
     {
-        echo '<!-- MacCodePrettify Plugin by Đông -->';
-        echo '<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />';
-        echo '<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />';
-        echo '<style>
-            /* THÊM VIỀN SÁNG MỜ VÀ ĐIỀU CHỈNH NỀN KHỐI CODE TỐI ƯU DARK MODE */
-            .mac-code-block { background: #252526; border-radius: 8px; margin: 20px 0; overflow: hidden; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 1px solid rgba(255, 255, 255, 0.12); }
-            
-            /* LÀM TỐI THANH HEADER HƠN MỘT CHÚT ĐỂ TẠO CHIỀU SÂU */
-            .mac-header { background: #1e1e1e; height: 35px; display: flex; align-items: center; padding: 0 15px; position: relative; z-index: 2; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-            
-            .mac-dots { display: flex; gap: 8px; }
-            .mac-dots span { width: 12px; height: 12px; border-radius: 50%; }
-            .mac-dots span:nth-child(1) { background: #ff5f56; }
-            .mac-dots span:nth-child(2) { background: #ffbd2e; }
-            .mac-dots span:nth-child(3) { background: #27c93f; }
-            .mac-lang { color: #ccc; font-size: 13px; font-weight: bold; position: absolute; left: 50%; transform: translateX(-50%); text-transform: uppercase; }
-            
-            .mac-copy-btn { 
-                position: absolute; right: 10px; background: transparent !important; 
-                border: 1px solid rgba(255, 255, 255, 0.2) !important; color: #eee !important; 
-                border-radius: 4px !important; padding: 0 8px !important; 
-                height: 24px !important; display: inline-flex !important; 
-                align-items: center !important; justify-content: center !important;
-                font-size: 12px !important; cursor: pointer; transition: 0.3s; 
-                margin: 0 !important; box-sizing: border-box !important; 
-                text-transform: none !important; box-shadow: none !important;
-                line-height: normal !important; font-family: inherit !important;
-                z-index: 10;
-            }
-            .mac-copy-btn:hover { background: rgba(255,255,255,0.1) !important; border-color: rgba(255, 255, 255, 0.4) !important; color: #fff !important; }
-            .mac-copy-btn svg { margin-right: 4px; }
-            
-            .mac-code-block pre { position: relative !important; margin: 0 !important; padding: 15px 15px 15px 50px !important; background: transparent !important; border-radius: 0 !important; overflow-x: auto; }
-            .mac-code-block code { position: static !important; display: block !important; padding: 0 !important; margin: 0 !important; font-family: Consolas, Monaco, monospace; font-size: 14px; line-height: 1.6; }
-            
-            /* TÁCH BIỆT CỘT SỐ DÒNG */
-            .mac-code-block .line-numbers-rows { position: absolute !important; top: 0 !important; left: 0 !important; width: 40px !important; padding: 15px 0 !important; margin: 0 !important; border-right: 1px solid rgba(255, 255, 255, 0.08) !important; background: rgba(0, 0, 0, 0.1) !important; }
-            .mac-code-block .line-numbers-rows > span:before { color: #777 !important; padding-right: 10px !important; }
-            
-            /* TỐI ƯU THANH CUỘN */
-            .mac-code-block pre { scrollbar-width: none !important; -ms-overflow-style: none !important; }
-            .mac-code-block pre::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
-            .mac-code-block pre.is-scrolling, .mac-code-block:hover pre, .mac-code-block pre:active { scrollbar-width: thin !important; -ms-overflow-style: auto !important; }
-            .mac-code-block pre.is-scrolling::-webkit-scrollbar, .mac-code-block:hover pre::-webkit-scrollbar, .mac-code-block pre:active::-webkit-scrollbar { display: block !important; height: 6px !important; }
-            .mac-code-block pre::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.25) !important; border-radius: 10px !important; }
-        </style>';
+        // ĐỂ TRỐNG: Chuyển toàn bộ CSS xuống Footer để tránh bị Theme xóa mất khi chạy Pjax
     }
 
     public static function footer()
@@ -93,6 +46,49 @@ class MacCodePrettify_Plugin implements Typecho_Plugin_Interface
         $options = Helper::options()->plugin('MacCodePrettify');
         $copyTxt = $options->copyText ? $options->copyText : 'Sao chép';
         $copiedTxt = $options->copiedText ? $options->copiedText : 'Đã sao chép!';
+
+        // Nhúng toàn bộ Thư viện, CSS và JS vào Footer (Vùng an toàn không bị xóa)
+        echo '<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />';
+        echo '<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />';
+        
+        echo '<style>
+            /* ÉP BUỘC CSS BẰNG !important ĐỂ CHỐNG LẠI THEME HANDSOME */
+            .mac-code-block { background: #252526 !important; border-radius: 8px !important; margin: 20px 0 !important; overflow: hidden !important; position: relative !important; box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; }
+            .mac-header { background: #1e1e1e !important; height: 35px !important; display: flex !important; align-items: center !important; padding: 0 15px !important; position: relative !important; z-index: 2 !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; }
+            .mac-dots { display: flex !important; gap: 8px !important; }
+            .mac-dots span { width: 12px !important; height: 12px !important; border-radius: 50% !important; display: inline-block !important; }
+            .mac-dots span:nth-child(1) { background: #ff5f56 !important; }
+            .mac-dots span:nth-child(2) { background: #ffbd2e !important; }
+            .mac-dots span:nth-child(3) { background: #27c93f !important; }
+            .mac-lang { color: #ccc !important; font-size: 13px !important; font-weight: bold !important; position: absolute !important; left: 50% !important; transform: translateX(-50%) !important; text-transform: uppercase !important; font-family: sans-serif !important;}
+            
+            .mac-copy-btn { 
+                position: absolute !important; right: 10px !important; background: transparent !important; 
+                border: 1px solid rgba(255, 255, 255, 0.2) !important; color: #eee !important; 
+                border-radius: 4px !important; padding: 0 8px !important; 
+                height: 24px !important; display: inline-flex !important; 
+                align-items: center !important; justify-content: center !important;
+                font-size: 12px !important; cursor: pointer !important; transition: 0.3s !important; 
+                margin: 0 !important; box-sizing: border-box !important; 
+                text-transform: none !important; box-shadow: none !important;
+                line-height: normal !important; font-family: inherit !important;
+                z-index: 10 !important;
+            }
+            .mac-copy-btn:hover { background: rgba(255,255,255,0.1) !important; border-color: rgba(255, 255, 255, 0.4) !important; color: #fff !important; }
+            .mac-copy-btn svg { margin-right: 4px !important; display: block !important; }
+            
+            .mac-code-block pre { position: relative !important; margin: 0 !important; padding: 15px 15px 15px 50px !important; background: transparent !important; border-radius: 0 !important; overflow-x: auto !important; }
+            .mac-code-block code { position: static !important; display: block !important; padding: 0 !important; margin: 0 !important; font-family: Consolas, Monaco, monospace !important; font-size: 14px !important; line-height: 1.6 !important; color: #ccc !important; }
+            
+            .mac-code-block .line-numbers-rows { position: absolute !important; top: 0 !important; left: 0 !important; width: 40px !important; padding: 15px 0 !important; margin: 0 !important; border-right: 1px solid rgba(255, 255, 255, 0.08) !important; background: rgba(0, 0, 0, 0.1) !important; }
+            .mac-code-block .line-numbers-rows > span:before { color: #777 !important; padding-right: 10px !important; }
+            
+            .mac-code-block pre { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+            .mac-code-block pre::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+            .mac-code-block pre.is-scrolling, .mac-code-block:hover pre, .mac-code-block pre:active { scrollbar-width: thin !important; -ms-overflow-style: auto !important; }
+            .mac-code-block pre.is-scrolling::-webkit-scrollbar, .mac-code-block:hover pre::-webkit-scrollbar, .mac-code-block pre:active::-webkit-scrollbar { display: block !important; height: 6px !important; }
+            .mac-code-block pre::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.25) !important; border-radius: 10px !important; }
+        </style>';
 
         echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>';
         echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>';
