@@ -3,11 +3,12 @@
  * Plugin Highlight Code giao diện Mac cho Typecho
  * 
  * Tích hợp nút sao chép có thể tùy chỉnh, đánh số dòng, 
- * tương thích hoàn hảo với PJAX và tối ưu thanh cuộn trên mobile.
+ * tương thích hoàn hảo với PJAX, tối ưu thanh cuộn trên mobile
+ * và hiển thị nổi bật trên giao diện Dark Mode.
  * 
  * @package MacCodePrettify
  * @author Đặng Minh Đông
- * @version 1.0.6
+ * @version 1.0.7
  * @link https://github.com/dangmjnhdong/MacCodePrettify
  * @copyright Copyright (c) 2026 by Đông
  */
@@ -43,8 +44,12 @@ class MacCodePrettify_Plugin implements Typecho_Plugin_Interface
         echo '<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />';
         echo '<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />';
         echo '<style>
-            .mac-code-block { background: #2d2d2d; border-radius: 8px; margin: 20px 0; overflow: hidden; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-            .mac-header { background: #212121; height: 35px; display: flex; align-items: center; padding: 0 15px; position: relative; z-index: 2;}
+            /* THÊM VIỀN SÁNG MỜ VÀ ĐIỀU CHỈNH NỀN KHỐI CODE TỐI ƯU DARK MODE */
+            .mac-code-block { background: #252526; border-radius: 8px; margin: 20px 0; overflow: hidden; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 1px solid rgba(255, 255, 255, 0.12); }
+            
+            /* LÀM TỐI THANH HEADER HƠN MỘT CHÚT ĐỂ TẠO CHIỀU SÂU */
+            .mac-header { background: #1e1e1e; height: 35px; display: flex; align-items: center; padding: 0 15px; position: relative; z-index: 2; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+            
             .mac-dots { display: flex; gap: 8px; }
             .mac-dots span { width: 12px; height: 12px; border-radius: 50%; }
             .mac-dots span:nth-child(1) { background: #ff5f56; }
@@ -54,7 +59,7 @@ class MacCodePrettify_Plugin implements Typecho_Plugin_Interface
             
             .mac-copy-btn { 
                 position: absolute; right: 10px; background: transparent !important; 
-                border: 1px solid #777 !important; color: #eee !important; 
+                border: 1px solid rgba(255, 255, 255, 0.2) !important; color: #eee !important; 
                 border-radius: 4px !important; padding: 0 8px !important; 
                 height: 24px !important; display: inline-flex !important; 
                 align-items: center !important; justify-content: center !important;
@@ -64,13 +69,15 @@ class MacCodePrettify_Plugin implements Typecho_Plugin_Interface
                 line-height: normal !important; font-family: inherit !important;
                 z-index: 10;
             }
-            .mac-copy-btn:hover { background: rgba(255,255,255,0.1) !important; border-color: #eee !important; color: #fff !important; }
+            .mac-copy-btn:hover { background: rgba(255,255,255,0.1) !important; border-color: rgba(255, 255, 255, 0.4) !important; color: #fff !important; }
             .mac-copy-btn svg { margin-right: 4px; }
             
             .mac-code-block pre { position: relative !important; margin: 0 !important; padding: 15px 15px 15px 50px !important; background: transparent !important; border-radius: 0 !important; overflow-x: auto; }
             .mac-code-block code { position: static !important; display: block !important; padding: 0 !important; margin: 0 !important; font-family: Consolas, Monaco, monospace; font-size: 14px; line-height: 1.6; }
-            .mac-code-block .line-numbers-rows { position: absolute !important; top: 0 !important; left: 0 !important; width: 40px !important; padding: 15px 0 !important; margin: 0 !important; border-right: 1px solid rgba(255, 255, 255, 0.1) !important; background: transparent !important; }
-            .mac-code-block .line-numbers-rows > span:before { color: #666 !important; padding-right: 10px !important; }
+            
+            /* TÁCH BIỆT CỘT SỐ DÒNG */
+            .mac-code-block .line-numbers-rows { position: absolute !important; top: 0 !important; left: 0 !important; width: 40px !important; padding: 15px 0 !important; margin: 0 !important; border-right: 1px solid rgba(255, 255, 255, 0.08) !important; background: rgba(0, 0, 0, 0.1) !important; }
+            .mac-code-block .line-numbers-rows > span:before { color: #777 !important; padding-right: 10px !important; }
             
             /* TỐI ƯU THANH CUỘN */
             .mac-code-block pre { scrollbar-width: none !important; -ms-overflow-style: none !important; }
@@ -145,7 +152,7 @@ class MacCodePrettify_Plugin implements Typecho_Plugin_Interface
                         setTimeout(function() {
                             span.innerText = "' . $copyTxt . '";
                             btn.style.color = "#eee";
-                            btn.style.borderColor = "#777";
+                            btn.style.borderColor = "rgba(255, 255, 255, 0.2)";
                             btn.querySelector("svg").style.stroke = "currentColor";
                         }, 2000);
                     });
